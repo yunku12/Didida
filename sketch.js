@@ -6,7 +6,7 @@ let fontsize;
 let p,h;
 let numRows, Gomin;
 var Texts = [];
-
+let rs;
 
 function preload() {
   // Ensure the .ttf or .otf font stored in the assets directory
@@ -23,7 +23,7 @@ function preload() {
 // This runs once in the beginning
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
+  frameRate(30);
 
   textAlign(CENTER, CENTER);
 
@@ -34,6 +34,7 @@ function setup() {
     Texts.push(new Animation());
      }
     }
+
 
 }
 
@@ -50,6 +51,7 @@ function draw() {
     // print(numRows);
     // print(Gomin);
 
+
  for (let i=0; i < numRows; i++) {
     let row = data.getRow(i);
     p = row.getString('WhatisyourGOMIN');
@@ -63,13 +65,14 @@ function draw() {
     Texts[i].fontanim();
     Texts[i].line(p);
    }
-
 }
 
 
 function Animation(p) {
   this.x = random(200,width-200);
   this.y = random(200,height-200);
+  let words = [BOLD, NORMAL, ITALIC, BOLDITALIC];
+  this.rs = random(words);
   this.speed = 1;
   this.vx = 0;
   this.vy = 0;
@@ -81,11 +84,12 @@ function Animation(p) {
   this.friction = 0.9;
   this.friction2 = -1;
   this.fontsize = random(20,50);
-  this.fontopasity = random(10,300);
+  this.fontopasity = random(10,255);
   this.bright = 0.1;
   this.big = 0.01;
   this.random = random(1,10);
   this.randomop = random(0.01,0.1);
+
 
 
   this.move = function(p) {
@@ -104,11 +108,11 @@ function Animation(p) {
     this.x += this.vx;
     this.y += this.vy;
 
-    if (this.x > width + this.tw/2) {
-      this.x = 0 - this.tw/2;
+    if (this.x > width + this.tw/2 +10) {
+      this.x = 0 - this.tw/2 -10;
       this.vx *= this.friction;
-    } else if (this.x <= 0 - this.tw/2) {
-      this.x = width+this.tw/2;
+    } else if (this.x <= 0 - this.tw/2 -10) {
+      this.x = width + this.tw/2 +10;
       this.vx *= this.friction;
     }
     if (this.y + this.fontsize / 2 > height) {
@@ -132,18 +136,24 @@ function Animation(p) {
 
     line(this.x + this.tw/2+10, this.y-this.fontsize/2,
       this.tw/2 + this.x+10, this.y+this.fontsize/2);
-
+      //noStroke();
+      stroke(255,50);
+      fill(0,10);
+      rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
+        this.tw+60,this.fontsize+40,this.fontsize/2);
 
   };
 
   this.display = function(p) {
 
     this.t = p;
-
+    noStroke();
     fill(300,this.fontopasity);
     textSize(this.fontsize);
-    noStroke();
+
+    textStyle(this.rs);
     text(this.t, this.x, this.y);
+
 
   };
 
@@ -157,13 +167,16 @@ function Animation(p) {
     }
 
     this.fontopasity += this.bright*10;
-    if (this.fontopasity > 300) {
+    if (this.fontopasity > 255) {
       this.bright = -(this.randomop);
     } else if (this.fontopasity < 10) {
       this.bright = this.randomop;
     }
 
+
+
   };
+
 
 
 }
