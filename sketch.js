@@ -62,6 +62,7 @@ function draw() {
     Texts[i].move();
     Texts[i].display(p);
     Texts[i].fontanim();
+    Texts[i].line(p);
    }
 
 }
@@ -142,7 +143,19 @@ this.collide = function() {
     }
   };
 
+  this.line = function(p) {
+    this.t = p;
+    strokeCap(SQUARE);
+    this.linecolor = 0;
+    const blink = map(millis() % 1000, 0, 300, 100, 0);
+    stroke(255,blink);
+    strokeWeight(3);
+    this.tw = textWidth(this.t);
+    line(this.x + this.tw/2+10, this.y-this.fontsize/2,
+      this.tw/2 + this.x+10, this.y+this.fontsize/2);
 
+
+  };
 
   this.display = function(p) {
 
@@ -152,11 +165,7 @@ this.collide = function() {
     textSize(this.fontsize);
     noStroke();
     text(this.t, this.x, this.y);
-    stroke(300);
-    strokeWeight(3);
-    this.tw = textWidth(this.t);
-    line(this.x + this.tw/2+10, this.y-this.fontsize/2,
-      this.tw/2 + this.x+10, this.y+this.fontsize/2);
+
   };
 
   this.fontanim = function() {
