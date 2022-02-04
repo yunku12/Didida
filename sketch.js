@@ -8,6 +8,7 @@ let numRows, Gomin;
 var Texts = [];
 let rs;
 
+
 function preload() {
   // Ensure the .ttf or .otf font stored in the assets directory
   // is loaded before setup() and draw() are called
@@ -15,9 +16,9 @@ function preload() {
 }
 
 function preload() {
-  data = loadTable(url, 'csv', 'header');
-
+    data = loadTable(url, 'csv', 'header');
 }
+
 
 //-----------------------------------------------------------------
 // This runs once in the beginning
@@ -35,9 +36,12 @@ function setup() {
      }
     }
 
-
 }
 
+
+function mousePressed() {
+
+}
 
 //-----------------------------------------------------------------
 // Our main program loop
@@ -172,11 +176,46 @@ function Animation(p) {
     } else if (this.fontopasity < 10) {
       this.bright = this.randomop;
     }
-
-
-
   };
 
-
-
 }
+
+
+var menuClick = function(url){
+
+	if(url == '/'){
+		location.reload(true);
+		return;
+	}
+
+
+
+	$.ajax({
+
+		type: 'POST',
+
+		url: url,
+
+		async:false,
+
+		data: "",
+
+		contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+
+		success: function(data) {
+
+			$('#Container').html(data);
+
+			if(isMenuHide) menuOff();
+
+		},
+
+		error: function(request, status, error) {
+
+			alert(error);
+
+		}
+
+	});
+
+};
