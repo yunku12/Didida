@@ -40,7 +40,7 @@ function setup() {
 
 
 function mousePressed() {
-
+ redraw();
 }
 
 //-----------------------------------------------------------------
@@ -66,8 +66,9 @@ function draw() {
     //Texts[i].collide();
     Texts[i].move(p);
     Texts[i].display(p);
-    Texts[i].fontanim();
+
     Texts[i].line(p);
+    Texts[i].fontanim();
    }
 }
 
@@ -88,11 +89,11 @@ function Animation(p) {
   this.friction = 0.9;
   this.friction2 = -1;
   this.fontsize = random(20,50);
-  this.fontopasity = random(10,255);
+  this.fontopasity = random(100,255);
   this.bright = 0.1;
   this.big = 0.01;
   this.random = random(1,10);
-  this.randomop = random(0.01,0.1);
+  //this.randomop = random(0.01,0.1);
 
 
 
@@ -133,18 +134,26 @@ function Animation(p) {
     this.tw = textWidth(this.t);
     this.linecolor = 0;
 
-    const blink = map(millis() % 2000, 0, 300, this.fontopasity, 0);
+    const blink = map(millis() % 2000, 0, 300, this.newopasity, 0);
     stroke(255,blink);
     strokeCap(SQUARE);
     strokeWeight(3);
-
     line(this.x + this.tw/2+10, this.y-this.fontsize/2,
       this.tw/2 + this.x+10, this.y+this.fontsize/2);
+
       //noStroke();
-      stroke(255,50);
-      fill(0,10);
-      rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
+    stroke(255,this.newopasity/2);
+    fill(0,this.rectopasity);
+    this.stw = map(this.fontsize,20,50,1,3);
+    strokeWeight(this.stw);
+    rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
         this.tw+60,this.fontsize+40,this.fontsize/2);
+    noStroke();
+    fill(300,this.newopasity);
+    textSize(this.fontsize);
+
+    textStyle(this.rs);
+    text(this.t, this.x, this.y);
 
   };
 
@@ -152,70 +161,31 @@ function Animation(p) {
 
     this.t = p;
     noStroke();
-    fill(300,this.fontopasity);
+    //fill(300,this.newopasity);
     textSize(this.fontsize);
-
-    textStyle(this.rs);
-    text(this.t, this.x, this.y);
-
 
   };
 
   this.fontanim = function() {
-
+    this.rectopasity = map(this.fontsize,20,50,100,230);
+    this.newopasity = map(this.fontsize,20,50,0,255);
     this.fontsize += this.big;
+    this.newopasity += this.bright*10;
+    this.rectopasity += this.bright*10;
     if (this.fontsize > 50 ) {
       this.big = -0.01;
+      this.bright = -0.1;
     } else if (this.fontsize < 20) {
       this.big = 0.01;
+      this.bright = 0.1;
     }
 
-    this.fontopasity += this.bright*10;
-    if (this.fontopasity > 255) {
-      this.bright = -(this.randomop);
-    } else if (this.fontopasity < 10) {
-      this.bright = this.randomop;
-    }
+
+    // if (this.fontopasity > 255) {
+    //   this.bright = -(this.randomop);
+    // } else if (this.fontopasity < 10) {
+    //   this.bright = this.randomop;
+    // }
   };
 
 }
-
-
-var menuClick = function(url){
-
-	if(url == '/'){
-		location.reload(true);
-		return;
-	}
-
-
-
-	$.ajax({
-
-		type: 'POST',
-
-		url: url,
-
-		async:false,
-
-		data: "",
-
-		contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-
-		success: function(data) {
-
-			$('#Container').html(data);
-
-			if(isMenuHide) menuOff();
-
-		},
-
-		error: function(request, status, error) {
-
-			alert(error);
-
-		}
-
-	});
-
-};

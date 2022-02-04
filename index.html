@@ -4,26 +4,12 @@
 
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="5">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js">
 
-    function refresh() {
-      $.ajax({
-        url: "",
-        dataType: "text",
-        success: function(html) {
-          $('#fu').replaceWith($.parseHTML(html));
-          setTimeout(refresh,2000);
-        }
-      });
-    }
-    refresh();
     </script>
   </head>
   <body>
-<div id="fu">
+
     <script src="sketch.js">
     </script>
-</div>
 
 </body></html>
