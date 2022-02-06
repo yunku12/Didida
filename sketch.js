@@ -142,10 +142,12 @@ function Animation(p) {
     this.t = p;
     this.linecolor = 0;
     this.ntw = textWidth(this.t);
-    if (this.ntw > 500){
-      this.cut = 3;
-    } else if (this.ntw <= 500) {
+    if (this.ntw <= 300){
+      this.cut = 1;
+    }else if (300 > this.ntw > 500){
       this.cut = 2;
+    } else if (this.ntw >= 500) {
+      this.cut = 3;
     };
     this.trw = this.ntw/this.cut;
 
@@ -192,10 +194,10 @@ function Animation(p) {
 
   this.fontanim = function() {
     this.rectopasity = map(this.fontsize,20,40,100,200);
-    this.newopasity = map(this.fontsize,20,40,10,255);
+    this.newopasity = map(this.fontsize,20,40,50,255);
     this.fontsize += this.big;
-    this.newopasity += this.bright*10;
-    this.rectopasity += this.bright*10;
+    this.newopasity += this.bright;
+    this.rectopasity += this.bright;
     if (this.fontsize > 40 ) {
       this.big = -0.01;
       this.bright = -0.01;
