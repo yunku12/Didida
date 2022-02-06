@@ -1,5 +1,5 @@
 let data;
-let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJzSZF_ucL_xSIjc8-pRxdDVbwF-40EjgGfa3D_Y47csUndfX__85Lwb7CTZoth_WpDEZnW2bpxLe/pub?gid=415352174&single=true&output=csv";
+let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vThIodGnonJpYFdcQwMHZqYxqXyBjHGS9pCrUgmgYc_oN9lCZunEJ5HtVuVGP8NsuD_qNhVpqL1qR5V/pub?gid=978816736&single=true&output=csv";
 
 let font;
 let fontsize;
@@ -67,16 +67,19 @@ function draw() {
     Texts[i].move(p);
     Texts[i].display(p);
 
-    //Texts[i].line(p);
+    Texts[i].line(p);
     Texts[i].fontanim();
    }
 }
 
 
 function Animation(p) {
-  this.x = random(0,width-200);
+  this.x = random(200,width-200);
   this.y = random(100,height-100);
-  let words = [BOLD, NORMAL, ITALIC, BOLDITALIC];
+
+  //this.x = 300;
+  //this.y = 100;
+  let words = [BOLD, NORMAL];
   this.rs = random(words);
   this.speed = 1;
   this.vx = 0;
@@ -88,99 +91,116 @@ function Animation(p) {
   this.gravity2 = random(0.0001,0.001);
   this.friction = 0.9;
   this.friction2 = -1;
-  this.fontsize = random(20,50);
-  this.fontopasity = random(100,255);
+  this.fontsize = random(10,40);
+  this.fontopasity = random(0,255);
   this.bright = 0.1;
   this.big = 0.01;
   this.random = random(1,10);
+  this.cut = 0;
+  //this.tw = 0;
   //this.randomop = random(0.01,0.1);
 
 
 
   this.move = function(p) {
     this.t = p;
-    this.tw = textWidth(this.t);
+    //this.tw = textWidth(this.t);
 
     if(this.random > 5) {
       this.vx += this.gravity2;
       this.vy += this.gravity2;
+      // this.big = 0.01;
     } else if (this.random <= 5) {
       this.gravity2 * -1;
       this.vx -= this.gravity2;
       this.vy -= this.gravity2;
+      // this.big = -0.01;
     }
 
     this.x += this.vx;
     this.y += this.vy;
 
-    if (this.x > width + this.tw/2 +10) {
-      this.x = 0 - this.tw/2 -10;
+    if (this.x > width + this.trw+this.fontsize*2) {
+      this.x = 0 - this.trw+this.fontsize*2;
       this.vx *= this.friction;
-    } else if (this.x <= 0 - this.tw/2 -10) {
-      this.x = width + this.tw/2 +10;
+    } else if (this.x <= 0 - this.trw+this.fontsize*2) {
+      this.x = width + this.trw+this.fontsize*2;
       this.vx *= this.friction;
     }
-    if (this.y + this.fontsize / 2 > height) {
-      this.y = height - this.fontsize / 2;
+    if (this.y> height -(this.rectheight+this.fontsize*3)) {
+      //this.y = height - (this.rectheight+this.fontsize*3)/2;
       this.vy *= this.friction2;
-    } else if (this.y - this.fontsize / 2 < 0) {
-      this.y = this.fontsize / 2;
+    } else if (this.y < 0 +(this.rectheight+this.fontsize*3)) {
+      //this.y = (this.rectheight+this.fontsize*3)/2;
       this.vy *= this.friction2;
     }
+
   };
 
   this.line = function(p) {
     this.t = p;
-    this.tw = textWidth(this.t);
     this.linecolor = 0;
+    this.ntw = textWidth(this.t);
+    if (this.ntw > 500){
+      this.cut = 3;
+    } else if (this.ntw <= 500) {
+      this.cut = 2;
+    };
+    this.trw = this.ntw/this.cut;
 
-    const blink = map(millis() % 2000, 0, 300, this.newopasity, 0);
-    stroke(255,blink);
-    strokeCap(SQUARE);
-    strokeWeight(3);
-    line(this.x + this.tw/2+10, this.y-this.fontsize/2,
-      this.tw/2 + this.x+10, this.y+this.fontsize/2);
 
-      //noStroke();
-    // stroke(255,this.newopasity/2);
-    // fill(0,this.rectopasity);
-    // this.stw = map(this.fontsize,20,50,1,3);
-    // //strokeWeight(this.stw);
-    // rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
-    //     this.tw+60,this.fontsize+40,this.fontsize/2);
-    // noStroke();
-    //fill(300,this.newopasity);
-    // textSize(this.fontsize);
-    //
+    // const blink = map(millis() % 2000, 0, 300, this.newopasity, 0);
+    // stroke(255,blink);
+    // strokeCap(SQUARE);
+    // strokeWeight(3);
+    // line(this.x + this.tw/2+10, this.y-this.fontsize/2,
+    //   this.tw/2 + this.x+10, this.y+this.fontsize/2);
+
+    noStroke();
+    stroke(255, this.newopasity-10);
+    fill(0,this.rectopasity);
+    this.stw = map(this.fontsize,20,50,1,3);
+    strokeWeight(this.stw);
+    rectMode(CENTER)
+    rect(this.x,this.y+this.rectheight/2,
+        this.trw+this.fontsize*2,this.rectheight+this.fontsize*3,
+        this.fontsize/2);
+    noStroke();
+    fill(300,this.newopasity);
+    textSize(this.fontsize);
+
+    textStyle(this.rs);
+    text(this.t, this.x, this.y,this.trw);
 
 
   };
 
   this.display = function(p) {
-
     this.t = p;
+    //this.ntw = textWidth(this.t);
+    //this.trw = this.ntw/3;
+    //this.tl = this.t.length;
+    this.rectheight = (this.cut+1)*this.fontsize-10;
     //this.newt = splitTokens(this.t, '\n');
     noStroke();
     //fill(300,this.newopasity);
     textSize(this.fontsize);
-    fill(300,this.newopasity);
-    textStyle(this.rs);
-    text(this.t, this.x, this.y);
+
 
   };
 
   this.fontanim = function() {
-    this.rectopasity = map(this.fontsize,20,50,100,230);
-    this.newopasity = map(this.fontsize,20,50,0,255);
+    this.rectopasity = map(this.fontsize,20,40,100,200);
+    this.newopasity = map(this.fontsize,20,40,10,255);
     this.fontsize += this.big;
     this.newopasity += this.bright*10;
     this.rectopasity += this.bright*10;
-    if (this.fontsize > 50 ) {
+    if (this.fontsize > 40 ) {
       this.big = -0.01;
-      this.bright = -0.1;
-    } else if (this.fontsize < 20) {
+      this.bright = -0.01;
+    } else if (this.fontsize <= 10) {
       this.big = 0.01;
-      this.bright = 0.1;
+      this.bright = 0.01;
     }
 
 
