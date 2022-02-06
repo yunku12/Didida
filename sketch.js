@@ -68,7 +68,7 @@ function draw() {
     Texts[i].display(p);
 
     Texts[i].line(p);
-    Texts[i].fontanim();
+    Texts[i].fontanim(p);
     Texts[i].move(p);
    }
 }
@@ -95,9 +95,10 @@ function Animation(p) {
   this.fontsize = random(10,40);
   this.fontopasity = random(0,255);
   this.bright = 0.1;
-  this.big = 0.01;
+  this.big = 0.1;
   this.random = random(1,10);
   this.cut = 0;
+  this.fontcolor = 255;
   //this.tw = 0;
   //this.randomop = random(0.01,0.1);
 
@@ -142,16 +143,23 @@ function Animation(p) {
     this.t = p;
     this.linecolor = 0;
     this.ntw = textWidth(this.t);
-    if (this.ntw <= 300){
+    this.nntw = this.ntw/this.fontsize;
+
+    if (this.nntw <= 10){
       this.cut = 1;
-    }else if (300 > this.ntw > 500){
+      //this.fontcolor = 255;
+    }else if (this.nntw < 25){
       this.cut = 2;
-    } else if (this.ntw >= 500) {
+      //this.fontcolor = 0;
+      //this.fontsize = 10;
+    } else if (this.nntw < 50) {
       this.cut = 3;
+      //this.fontcolor = 150;
+      //this.fontsize = 50;
     };
+
+    //this.cut = map(this.nntw,0,50,1,5);
     this.trw = this.ntw/this.cut;
-
-
     // const blink = map(millis() % 2000, 0, 300, this.newopasity, 0);
     // stroke(255,blink);
     // strokeCap(SQUARE);
@@ -165,25 +173,26 @@ function Animation(p) {
     this.stw = map(this.fontsize,20,50,1,3);
     strokeWeight(this.stw);
     rectMode(CENTER)
-    rect(this.x,this.y+this.rectheight/2,
-        this.trw+this.fontsize*2,this.rectheight+this.fontsize*3,
+    rect(this.x,this.y+this.rectheight/2-this.fontsize/this.cut,
+        this.trw+40*2,this.rectheight+40*this.cut,
         this.fontsize/2);
     noStroke();
-    fill(300,this.newopasity);
+    fill(this.fontcolor,255,255,this.newopasity);
     textSize(this.fontsize);
 
     textStyle(this.rs);
-    text(this.t, this.x, this.y,this.trw);
+    text(this.t, this.x, this.y,this.trw+15);
 
 
   };
 
   this.display = function(p) {
     this.t = p;
+    //textWrap(CHAR);
     //this.ntw = textWidth(this.t);
     //this.trw = this.ntw/3;
     //this.tl = this.t.length;
-    this.rectheight = (this.cut+1)*this.fontsize-10;
+    this.rectheight = (this.cut+1)*this.fontsize;
     //this.newt = splitTokens(this.t, '\n');
     noStroke();
     //fill(300,this.newopasity);
@@ -199,10 +208,10 @@ function Animation(p) {
     this.newopasity += this.bright;
     this.rectopasity += this.bright;
     if (this.fontsize > 40 ) {
-      this.big = -0.01;
+      this.big = -0.1;
       this.bright = -0.01;
     } else if (this.fontsize <= 10) {
-      this.big = 0.01;
+      this.big = 0.1;
       this.bright = 0.01;
     }
 
