@@ -64,11 +64,12 @@ function draw() {
     //print(Texts);
     //text(p, width/2, h/2);
     //Texts[i].collide();
-    Texts[i].move(p);
+
     Texts[i].display(p);
 
     Texts[i].line(p);
     Texts[i].fontanim();
+    Texts[i].move(p);
    }
 }
 
@@ -120,17 +121,17 @@ function Animation(p) {
     this.x += this.vx;
     this.y += this.vy;
 
-    if (this.x > width + this.trw+this.fontsize*2) {
+    if (this.x > width + this.trw+this.fontsize*2-10) {
       this.x = 0 - this.trw+this.fontsize*2;
       this.vx *= this.friction;
     } else if (this.x <= 0 - this.trw+this.fontsize*2) {
-      this.x = width + this.trw+this.fontsize*2;
+      this.x = width + this.trw+this.fontsize*2 +10;
       this.vx *= this.friction;
     }
-    if (this.y> height -(this.rectheight+this.fontsize*3)) {
+    if (this.y> height+this.rectheight+this.fontsize*3) {
       //this.y = height - (this.rectheight+this.fontsize*3)/2;
       this.vy *= this.friction2;
-    } else if (this.y < 0 +(this.rectheight+this.fontsize*3)) {
+    } else if (this.y < 0-this.rectheight+this.fontsize*3) {
       //this.y = (this.rectheight+this.fontsize*3)/2;
       this.vy *= this.friction2;
     }
