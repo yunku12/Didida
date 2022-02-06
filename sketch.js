@@ -48,7 +48,7 @@ function mousePressed() {
 function draw() {
   // put code here
   background('black');
-  textAlign(CENTER);
+  textAlign(LEFT);
   //frameRate(1);
   //typeWriter(p, 0, width/2, h/2, 100);
 
@@ -67,15 +67,15 @@ function draw() {
     Texts[i].move(p);
     Texts[i].display(p);
 
-    Texts[i].line(p);
+    //Texts[i].line(p);
     Texts[i].fontanim();
    }
 }
 
 
 function Animation(p) {
-  this.x = random(200,width-200);
-  this.y = random(200,height-200);
+  this.x = random(0,width-200);
+  this.y = random(100,height-100);
   let words = [BOLD, NORMAL, ITALIC, BOLDITALIC];
   this.rs = random(words);
   this.speed = 1;
@@ -142,27 +142,30 @@ function Animation(p) {
       this.tw/2 + this.x+10, this.y+this.fontsize/2);
 
       //noStroke();
-    stroke(255,this.newopasity/2);
-    fill(0,this.rectopasity);
-    this.stw = map(this.fontsize,20,50,1,3);
-    strokeWeight(this.stw);
-    rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
-        this.tw+60,this.fontsize+40,this.fontsize/2);
-    noStroke();
-    fill(300,this.newopasity);
-    textSize(this.fontsize);
+    // stroke(255,this.newopasity/2);
+    // fill(0,this.rectopasity);
+    // this.stw = map(this.fontsize,20,50,1,3);
+    // //strokeWeight(this.stw);
+    // rect(this.x-this.tw/2-30,this.y-this.fontsize/2-20,
+    //     this.tw+60,this.fontsize+40,this.fontsize/2);
+    // noStroke();
+    //fill(300,this.newopasity);
+    // textSize(this.fontsize);
+    //
 
-    textStyle(this.rs);
-    text(this.t, this.x, this.y);
 
   };
 
   this.display = function(p) {
 
     this.t = p;
+    //this.newt = splitTokens(this.t, '\n');
     noStroke();
     //fill(300,this.newopasity);
     textSize(this.fontsize);
+    fill(300,this.newopasity);
+    textStyle(this.rs);
+    text(this.t, this.x, this.y);
 
   };
 
