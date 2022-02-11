@@ -89,7 +89,7 @@ function Animation(p) {
   this.id = numRows;
   this.spring = 0;
   this.gravity = random(-0.01,0.01);
-  this.gravity2 = random(0.0001,0.001);
+  this.gravity2 = random(0.001,0.001);
   this.friction = 0.9;
   this.friction2 = -1;
   this.fontsize = random(10,40);
