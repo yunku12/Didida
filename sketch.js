@@ -95,7 +95,7 @@ function Animation(p) {
   this.fontsize = random(10,40);
   this.fontopasity = random(0,255);
   this.bright = 0.1;
-  this.big = 0.01;
+  this.big = 0.1;
   this.random = random(1,10);
   this.cut = 0;
   this.fontcolor = 255;
@@ -208,10 +208,10 @@ function Animation(p) {
     this.newopasity += this.bright;
     this.rectopasity += this.bright;
     if (this.fontsize > 40 ) {
-      this.big = -0.01;
+      this.big = -0.1;
       this.bright = -0.01;
     } else if (this.fontsize <= 10) {
-      this.big = 0.01;
+      this.big = 0.1;
       this.bright = 0.01;
     }
 
